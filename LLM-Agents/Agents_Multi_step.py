@@ -135,7 +135,7 @@ def log_non_agentic(query, answer, total_time):
         "task_type": task_type,
         "api_difficulty": api_difficulty,
         "task_complexity": task_complexity,
-        "tool_count": 0,
+        "semacount": 0,
         "model": MODEL,
         "agentic": False
     }

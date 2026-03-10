@@ -14,7 +14,8 @@ def run_regression_comparison(
     # ============================
     agent = pd.read_json(agent_file, lines=True)
     base = pd.read_json(baseline_file, lines=True)
-
+    def jitter(series, amount=0.15):
+        return series + np.random.uniform(-amount, amount, size=len(series))
     # ============================
     # Query classification
     # ============================
@@ -50,14 +51,7 @@ def run_regression_comparison(
     agent["total_latency"] = agent["total_time"]
     base["total_latency"] = base["total_time"]
 
-    # ============================
-    # Add jitter for visualization
-    # ============================
-    def jitter(series, amount=0.15):
-        return series + np.random.uniform(-amount, amount, size=len(series))
 
-    agent[f"{predictor}_jitter"] = jitter(agent[predictor])
-    base[f"{predictor}_jitter"] = jitter(base[predictor])
 
     # ============================
     # Extract errors (LLM-Agent only)
@@ -97,8 +91,48 @@ def run_regression_comparison(
 
     if len(errors) > 0:
         errors["error_group"] = errors["error_type"].apply(normalize_error_type)
+        # ============================
+# Reduce to one row per query (preserve tool_count)
+# ============================
+
+    # Preserve original tool_count per query
+    if "tool_count" in agent.columns:
+        agent_tool_counts = agent[["query", "tool_count"]].drop_duplicates()
+    else:
+        agent_tool_counts = pd.DataFrame(columns=["query", "tool_count"])
+
+    if "tool_count" in base.columns:
+        base_tool_counts = base[["query", "tool_count"]].drop_duplicates()
+    else:
+        base_tool_counts = pd.DataFrame(columns=["query", "tool_count"])
+
+    # Collapse everything else
+    agent = agent.groupby("query", as_index=False).agg({
+        "task_complexity": "mean",
+        "total_latency": "mean",
+        "query_type": "first",
+        "api_difficulty": "mean",
+    })
+
+    base = base.groupby("query", as_index=False).agg({
+        "task_complexity": "mean",
+        "total_latency": "mean",
+        "query_type": "first",
+        "api_difficulty": "mean",
+    })
+
+    
+
+    # Merge tool_count back in
+    agent = agent.merge(agent_tool_counts, on="query", how="left")
+    base = base.merge(base_tool_counts, on="query", how="left")
 
     # ============================
+    # Count queries per category
+    # ============================
+    agent_counts = agent["query_type"].value_counts().to_dict()
+    base_counts  = base["query_type"].value_counts().to_dict()
+        # ============================
     # Fit regressions
     # ============================
     X_agent = sm.add_constant(agent[predictor])
@@ -168,8 +202,12 @@ def run_regression_comparison(
     base_line = base_intercept + model_base.params[predictor] * x_vals
 
     # ============================
-    # COUNT POINTS PER CATEGORY
+    # Add jitter for visualization
     # ============================
+   
+
+    agent[f"{predictor}_jitter"] = jitter(agent[predictor])
+    base[f"{predictor}_jitter"] = jitter(base[predictor])
     # ============================
     # UNIQUE QUERY COUNTS FOR LEGEND
     # ============================
