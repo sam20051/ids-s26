@@ -263,7 +263,7 @@ def run_regression_comparison(
             alpha=0.75,
             color=color,
             marker="o",
-            s=70,
+            s=60,
             edgecolor="black",
             label=label
         )
@@ -283,11 +283,12 @@ def run_regression_comparison(
         ax.scatter(
             subset[f"{predictor}_jitter"],
             subset[outcome],
-            alpha=0.9,
+            alpha=0.75,
             color=color,
             marker="s",
-            s=90,
-            linewidths=2,
+            s=60,
+            edgecolor="black",
+            linewidths=0.8,
             label=label
                 )
     # ----------------------------------------
@@ -300,8 +301,8 @@ def run_regression_comparison(
             error_unique[f"{predictor}_jitter"],
             error_unique[outcome],
             color="red",
-            marker="X",
-            s=70,
+            marker="x",
+            s=60,
             alpha=0.55,
             linewidths=0.9,
             label="LLM-Agent Errors"
