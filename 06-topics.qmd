@@ -20,3 +20,7 @@
 ## Web Scraping
 
 {{< include _webscraping.qmd >}}
+
+## Random Forests
+
+{{< include _random_forests.qmd >}}
