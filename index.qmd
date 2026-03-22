@@ -189,7 +189,10 @@ Markdown.
     - Use git better in a collobrative environment and more complex commands
     - Apply data analysis to translate data to real-world results
     - Understand the use of Quarto in data analysis
-+ Mccabe, Scott
++ McCabe, Scott
+    - Become more comfortable with using Python
+    - Gain an understand of using GitHub for collaborative work
+    - Learn different strategies for analyzing data sets
 + Mohan, Harish
     - Enhance my skills in python
     - Gain expertise in working with raw data and translating it to real world results
