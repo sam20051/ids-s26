@@ -398,14 +398,14 @@ is available under the `templates` directory in
 the classnotes source tree, thank to Zachary Blanchard, which can
 be used as a template to start with.
 
-   Date  | Presenter
-  ------ | ---------------------- 
-   04/15 |  
-   04/20 |  
-   04/22 |  
-   04/27 |    
-   04/29 | 
-   Scheduled Final Exam Time| 
+   Date  | Location |Presenter
+  ------ | ---------|---------------------- 
+   04/15 | AUST 313 | 
+   04/20 | AUST 313 |  
+   04/22 | AUST 313 | 
+   04/27 | AUST 313 |   
+   04/29 | AUST 313 |
+   05/08, 8:00 AM to 10:00 AM | AUST 313 | 
 
   
 ### Contributing to the Class Notes
